@@ -1,0 +1,76 @@
+@import "font.less";
+@import "variables.less";
+@import "custom.less";
+@import "mixins.less";
+
+
+html{
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Roboto";
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: @body-text;
+  @media(min-width: 767px){
+    font-size: 0.9rem;
+  }
+}
+// .container{
+//   @media(min-width: 1400px){
+//     max-width: 1250px;
+//   }
+// }
+.login-succ{
+  text-align: right;
+  font-size: 12;
+  font-weight: bold;
+}
+.email-font p.font{
+  font-size: 14;
+}
+.password-font p.font{
+  font-size: 14;
+}
+.modal-dialog{
+  position: absolute;
+}
+.pl {
+  position: relative;
+  padding-right: 15px;
+  &:after {
+    content: '';
+    background-image: url('../images/tm.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 2px;
+    right: 0px;
+  }
+  &.large {
+    padding-right: 23px;
+    &:after {
+      width: 25px;
+      height: 25px;
+      top: 10px;
+      right: 0px;
+    }
+  }
+  &.semi_large {
+    padding-right: 19px;
+    &:after {
+      width: 17px;
+      height: 17px;
+      top: -1px;
+      right: 0px;
+    }
+  }
+  &.theme_color {
+    &:after {
+      background-image: url('../images/tm.svg');
+    }
+  }
+}
