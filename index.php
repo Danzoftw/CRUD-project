@@ -1,8 +1,6 @@
 <?php
     // Include config file
-    
     require_once 'dbconnect.php';
-    $disp = 0;
 
 ?>
 
@@ -27,23 +25,23 @@
         <div class="container">
           <div class="col-sm-6">
             <div class="row">
+              <?php
+                if(session_id() == ''){
+              ?>
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Login</button>
+              <?php
+                }
+              ?>
+                
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Reg">Registration</button>
                 <?php
-                  if(session_id() == ''){
-
+                  if( session_id() != "" ){
+                    ?>
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Logout">Logout</button>
+                    <?php
                   }
-                  else
-                  {
-                ?>
-                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Logout">Logout</button>
-                <?php
-                }
                 ?>
                 
-                <!-- <button>Login</button> -->
-                
-
                 <!-- Modal Login -->
               <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
@@ -124,7 +122,7 @@
                     </div>
                     <div class="modal-body">
                       
-                        <button type="button" class="btn btn-default" >Yes</button>
+                        <button type="button" class="btn btn-default" id="logout_session" >Yes</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                       
                     </div>
@@ -183,7 +181,7 @@
                                 <div class="email-font">
                                 <div class="form-group row">
                                      <div class="col-xs-3 col-md-3 col-md-offset-5">
-                                        <p class="font">Email :</p><input type="text" class="form-control form-control-sm"  id="email_id"  name="email_id" required="required" /> 
+                                        <p class="font">Email :</p><input type="text" class="form-control form-control-sm"  id="reg_email_id"  name="reg_email_id" required="required" /> 
                                      </div>
                                 </div>
                                 </div>
@@ -211,12 +209,12 @@
                         <?php
                         // session_start();
                         if(isset($_POST['register'])){
-                         if(empty($_POST['email_id']) || empty($_POST['user_password_one'])){
+                         if(empty($_POST['reg_email_id']) || empty($_POST['user_password_one'])){
                          $error = "Username or Password is Empty";
                          }
                          else
                          {
-                            $email_one=$_POST['email_id'];
+                            $email_one=$_POST['reg_email_id'];
                             $pass_one=$_POST['user_password_one'];
 
                              $db = mysqli_select_db($conn, "project1");
