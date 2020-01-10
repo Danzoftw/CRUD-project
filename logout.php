@@ -1,7 +1,5 @@
 <?php
-	if($_GET['logout'])
-	{
-	    session_destroy()
-	    exit;
-	}
+      session_start();
+      session_destroy();
+      header("location:index.php");
 ?>

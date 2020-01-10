@@ -1,9 +1,6 @@
 <?php
-    // Include config file
     require_once 'dbconnect.php';
-
 ?>
-
 <html>
     <head>
         <title>Internship</title>
@@ -18,7 +15,8 @@
         <script src="js/script.js"></script> 
 
     </head>
-      <?php include 'header.php';?>
+      <?php
+       include 'header.php';?>
     <body>
       <div class="container">
         <div class="row">
