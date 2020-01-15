@@ -25,19 +25,12 @@ require_once 'dbconnect.php';
     //print_r($rows);
     if($rows > 0){
 
-          $_SESSION['name'] = $_POST['login_email_id'];
-        //echo $_SESSION['name'] ;
+          //$_SESSION['name'] = $_POST['login_email_id'];
+    //echo $_SESSION['name'] ;
     echo 0;
     }
     if($rows == 0){
     echo 1; 
     }
-    // else if(isset($_SESSION)){
-    // print_r("Session running");
-    //   }else{
-    //     print_r("Session not running");
-    //   }
-    
-
 ?>
 
