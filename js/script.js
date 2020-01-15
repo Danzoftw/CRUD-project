@@ -1,4 +1,108 @@
 $(document).ready(function(){
+     $(".update-form .up-btn").click(function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        console.log(id);
+        // $('#userId').val(id);
+         $.ajax({
+        type: 'POST',
+        url: 'select.php',
+        dataType: 'json',
+        data: { text1: id},
+        success: function(response) {
+           $('#email').val(response[0]);
+           $('#name').val(response[1]);
+           $('#mobile').val(response[2]);
+           $('#address').val(response[3]);
+           $('#userId').val(response[4]);
+        }
+    });
+});
+$("#savebtn").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("email", $("#email").val());
+        form.append("name",  $("#name").val());
+        form.append("mobile",  $("#mobile").val());
+        form.append("address",  $("#address").val());
+        form.append("userId",  $('#userId').val());
+
+          $.ajax({
+
+          "url": "http://localhost/Project1/update.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          success :function(response){
+                    $('.results').html(response);
+                //console.log(response);
+                   $('#updatemodal').modal('toggle');
+
+            }
+        });
+});
+$(".update-form .del-btn").click(function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        console.log(id);
+        // $('#userId').val(id);
+         $.ajax({
+        type: 'POST',
+        url: 'select.php',
+        dataType: 'json',
+        data: { text1: id},
+        success: function(response) {
+          //console.log("reached");
+           $('#demail').val(response[0]);
+           $('#dname').val(response[1]);
+           $('#dmobile').val(response[2]);
+           $('#daddress').val(response[3]);
+           $('#duserId').val(response[4]);
+          //console.log($('#duserId').val());
+        }
+    });
+});
+$("#delbtn").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("email", $("#email").val());
+        form.append("name",  $("#name").val());
+        form.append("mobile",  $("#mobile").val());
+        form.append("address",  $("#address").val());
+        form.append("duserId",  $('#duserId').val());
+
+          $.ajax({
+
+          "url": "http://localhost/Project1/delete.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          success :function(response){
+                    $('.results').html(response);
+                //console.log(response);
+                   $('#deletemodal').modal('toggle');
+
+            }
+        });
+});
+
+$('#email').focus(function() {
+$(this).blur();
+});
+$('#demail').focus(function() {
+$(this).blur();
+});
+$('#dname').focus(function() {
+$(this).blur();
+});
+$('#dmobile').focus(function() {
+$(this).blur();
+});
+$('#daddress').focus(function() {
+$(this).blur();
+});
    $("#btnsubmit").click(function(e){
          e.preventDefault();
 
@@ -112,6 +216,7 @@ $("#insertform").validate({
         }).done(function (response) {
             console.log(response);
             if (response==1){
+
             $(".email-registered").removeClass("d-none");
             $(".email-registered").addClass("d-block");
             }
@@ -131,6 +236,7 @@ $("#insertform").validate({
             $(".mobile-registered").addClass("d-block");
             } 
             if(response==0){
+            window.location.replace("http://localhost/Project1/index.php");
             $(".email-registered").addClass("d-none");
             $(".email-registered").removeClass("d-block");
 
@@ -139,6 +245,7 @@ $("#insertform").validate({
 
             $(".ins-succ").removeClass("d-none");
             $(".ins-succ").addClass("d-block");
+
           }
         });
              return false; // required to block normal submit since you used ajax
@@ -180,27 +287,40 @@ $("#insertform").validate({
     });
 
 $("#logout_session").click(function(e){
-    window.location.replace("http://localhost/Project1/logout.php");
+        e.preventDefault();
+          $.ajax({
+
+          "url": "http://localhost/Project1/logout.php",
+          processData: false,
+          contentType: false,
+          success :function(response){
+                   $('.log-disp').html(response);
+                   $('#logout_sess').modal('toggle');
+                    window.location.replace("http://localhost/Project1/index.php");
+            }
+        });
+
+     
+     
 });
 
-$("#updateemail").validate({
+$("#updateaddress").validate({
          rules: {
-            old_user_email: {
+            current_user_email: {
                 required: true,
                 email: true
             },
-            new_user_email: {
-                required:true,
-                email: true
+            new_user_address: {
+                required:true
             }
         },
          submitHandler: function (form) {
             var form = new FormData();
-            form.append("old_user_email", $("#old_user_email").val());
-            form.append("new_user_email", $("#new_user_email").val());
+            form.append("current_user_email", $("#current_user_email").val());
+            form.append("new_user_address", $("#new_user_address").val());
             $.ajax({
 
-          "url": "http://localhost/Project1/updateemail.php",
+          "url": "http://localhost/Project1/updateaddress.php",
           "method": "POST",
           "data": form,
            processData: false,
@@ -208,8 +328,11 @@ $("#updateemail").validate({
         }).done(function (response) {
             console.log(response);
             if (response==1){
-            $(".email-updated").removeClass("d-none");
-            $(".email-updated").addClass("d-block");
+                //var loadUrl = "http://localhost/Project1/index.php";
+                 $('#update-btn').modal('toggle'); 
+            //window.location.replace("http://localhost/Project1/index.php");
+            $(".address-updated").removeClass("d-none");
+            $(".address-updated").addClass("d-block");
             }  
         });
              return false; // required to block normal submit since you used ajax
@@ -218,7 +341,7 @@ $("#updateemail").validate({
 
 $("#updatename").validate({
          rules: {
-            old_user_name: {
+            current_user_email: {
                 required: true
                 
             },
@@ -228,7 +351,7 @@ $("#updatename").validate({
         },
          submitHandler: function (form) {
             var form = new FormData();
-            form.append("old_user_name", $("#old_user_name").val());
+            form.append("current_user_email", $("#current_user_email").val());
             form.append("new_user_name", $("#new_user_name").val());
             $.ajax({
 
@@ -240,6 +363,8 @@ $("#updatename").validate({
         }).done(function (response) {
             console.log(response);
             if (response==1){
+            window.location.replace("http://localhost/Project1/index.php");
+
             $(".name-updated").removeClass("d-none");
             $(".name-updated").addClass("d-block");
             }  
@@ -250,13 +375,13 @@ $("#updatename").validate({
 
 $("#delete-data").validate({
          rules: {
-            name_delete: {
+            email_delete: {
                 required: true
             }
         },
          submitHandler: function (form) {
             var form = new FormData();
-            form.append("name_delete", $("#name_delete").val());
+            form.append("email_delete", $("#email_delete").val());
             $.ajax({
 
           "url": "http://localhost/Project1/delete.php",
@@ -269,6 +394,33 @@ $("#delete-data").validate({
             if (response==1){
             $(".data-deleted").removeClass("d-none");
             $(".data-deleted").addClass("d-block");
+            }  
+        });
+             return false; // required to block normal submit since you used ajax
+         }
+     });
+
+$("#session-update-form").validate({
+         rules: {
+            new_email: {
+                required: true            }
+        },
+         submitHandler: function (form) {
+            var form = new FormData();
+            form.append("new_email", $("#new_email").val());
+            $.ajax({
+
+          "url": "http://localhost/Project1/session_update.php",
+          "method": "POST",
+          "data": form,
+           processData: false,
+           contentType: false
+        }).done(function (response) {
+            console.log(response);
+            if (response==1){
+                console.log("Email updated successfully");
+            // $(".name-updated").removeClass("d-none");
+            // $(".name-updated").addClass("d-block");
             }  
         });
              return false; // required to block normal submit since you used ajax

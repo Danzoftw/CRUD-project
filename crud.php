@@ -1,7 +1,7 @@
 <?php
 session_start();
 ?>
-<header>
+<crud>
 <div id="align_login">
   <p class="d-none succ_login danger">You have successfully logged in</p>
 </div>
@@ -154,4 +154,4 @@ session_start();
   </div>
 </div>
 
-</header>
+</crud>

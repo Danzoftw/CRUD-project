@@ -1,5 +1,11 @@
 <?php
       session_start();
-      session_destroy();
-      header("location:index.php");
+      $sess = session_destroy();
+      if ($sess) {
+      	echo 1;
+      }
+      else{
+      	echo 0;
+      }
 ?>
+

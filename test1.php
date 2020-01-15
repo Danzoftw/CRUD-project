@@ -9,7 +9,14 @@
 </head>
 <body>
 
-<p>Your Name is: <?php echo $_SESSION['name']; ?></p>   
+<p>Your Name is: <?php echo $_SESSION['name']; 
+
+	
+
+        echo  $_SESSION['name'];
+        //echo  $scue;
+
+?></p>   
 
 
 </body>

@@ -1,22 +1,27 @@
 <?php
         require_once 'dbconnect.php';
 
-            $id = $_POST['duserId'];
+ 
+        if(isset($_POST['email'])){ 
 
-            //print_r($id);
+            // $email = $_POST['email'];
+            $name = $_POST['name'];
+            $mobile = $_POST['mobile'];
+            $address = $_POST['address'];
+            $id = $_POST['userId'];
 
-        $sql = "DELETE FROM  `crud` WHERE id = '$id'";
+        $sql = "UPDATE `crud` SET name = '$name', mobile = '$mobile', address = '$address' WHERE id = '$id'";
         $results = $conn->query($sql);
         if($results)
         {
-           echo 1;
-           //echo $id;
+           echo 1;           
         }
         else{
             echo 0;
         }      
-    
+    }
 ?>
+
 <div class="db-table">
     <div class="titles-holder d-flex">
       <div class="col-sm-2">
@@ -40,7 +45,7 @@
       $result = $conn-> query($sql);
       while ($row = $result->fetch_assoc()) {
     ?>
-        <div  class="update-form">
+        <div class="update-form">
           <div class="single-row d-flex">
             <div class="col-sm-2">
               <h4><?php echo $row["email"]; ?></h4>
@@ -56,9 +61,6 @@
             </div>
             <div class="col-sm-1">
               <button type="button" id="<?php echo $row["id"];?>" data-role="update" data-target="#updatemodal" data-toggle="modal" class="btn btn-info btn-lg up-btn" data-id="<?php echo $row["id"];?>" >UPDATE</button>
-            </div>  
-            <div class="col-sm-1">
-              <button type="button" id="<?php echo $row["id"];?>" data-role="delete" data-target="#deletemodal" data-toggle="modal" class="btn btn-info btn-lg del-btn" data-id="<?php echo $row["id"];?>" >DELETE</button>
             </div>       
           </div>
         </div>
