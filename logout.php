@@ -1,11 +1,9 @@
 <?php
       session_start();
-      $sess = session_destroy();
-      if ($sess) {
-      	echo 1;
-      }
-      else{
-      	echo 0;
-      }
+      session_destroy();
+      //$host  = $_SERVER['HTTP_HOST'];
+      $link = "http://localhost/Project1/index.php";
+      echo $link; 
+      
 ?>
 

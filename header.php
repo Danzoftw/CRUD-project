@@ -4,19 +4,26 @@ session_start();
 ?>
 
 <header>
+
   <div class="container">
     <div class="col-sm-12">
       <div class="row">
         <?php
           if ($_SESSION) {
             ?>
-            <div class="col-sm-6">
+            
+            <div class="results-insert d-flex">
+            <div class="col-sm-8">
               <button type="button"  class="btn btn-info btn-lg " data-toggle="modal" data-target="#Logout">Logout</button>
             </div>
-            <div class="col-sm-6">
-              <button type="button"  class="btn btn-info btn-lg " data-toggle="modal" data-target="#crud_btn">Insert</button>
+            <div class="col-sm-8">
+              <button type="button"  class="btn btn-info btn-lg ins-btn" data-toggle="modal" data-target="#insertmodal">Insert</button>
+              <!-- <p class="d-none ins-succ">Data inserted successfully!!</p> -->
             </div>
+            </div>
+            
             <?php
+
           }else{
         ?>
           <div class="col-sm-6">
@@ -59,9 +66,9 @@ session_start();
             </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
+</div>
         <!-- Modal Logout-->
   <form action="" method="POST" id="logout_sess">
     <div class="modal" id="Logout" >
@@ -86,6 +93,7 @@ session_start();
       else
       {
     ?>
+    <div id="insert_btn"></div>
     <div class="results">
       <div class="db-table">
         <div class="titles-holder d-flex">
@@ -102,12 +110,15 @@ session_start();
             <h4>Address</h4>
           </div>
           <div class="col-sm-2">
+            <h4>Images</h4>
           </div>
+          <div id="insert_load"></div>
         </div>
         <?php
           $sql = "SELECT * FROM crud"; 
           $result = $conn-> query($sql);
           while ($row = $result->fetch_assoc()){
+            $image = substr($row['image'], 3);
         ?>
         <div  class="update-form">
           <div class="single-row d-flex">
@@ -123,11 +134,14 @@ session_start();
             <div class="col-sm-4">
               <h4><?php echo $row["address"]; ?></h4>
             </div>
+            <div class="col-sm-2">
+              <?php echo "<img src='".$row['image']."' style='height:100px; width:100px;'/>";?>
+          </div>
             <div class="col-sm-1">
               <button type="button" id="<?php echo $row["id"];?>" data-role="update" data-target="#updatemodal" data-toggle="modal" class="btn btn-info btn-lg up-btn" data-id="<?php echo $row["id"];?>" >UPDATE</button>
             </div>  
             <div class="col-sm-1">
-              <button type="button" id="<?php echo $row["id"];?>" data-role="delete" data-target="#deletemodal" data-toggle="modal" class="btn btn-info btn-lg del-btn" data-id="<?php echo $row["id"];?>" >DELETE</button>
+              <button type="button" id="test_del" data-role="delete" data-target="#deletemodal" data-toggle="modal" class="btn btn-info btn-lg del-btn" data-id="<?php echo $row["id"];?>" >DELETE</button>
             </div>       
           </div>
         </div>
@@ -205,7 +219,7 @@ session_start();
   <!-- Modal Delete -->
        
   <!-- Modal INSERT -->
-    <div class="modal" id="crud_btn">
+    <div class="modal" id="insertmodal">
       <div class="modal-dialog">            
         <!-- Modal content-->
         <div class="modal-content">
@@ -214,42 +228,41 @@ session_start();
             <!-- <h4 class="modal-title">Modal Header</h4> -->
           </div>
           <div class="modal-body">
-            <form action="" method="POST" id="insertform" >
+            <form action="" method="POST" id="insertform" enctype="multipart/form-data">
               <div class="form-group row">
                <div class="col-xs-3 col-md-3 col-md-offset-5">
                   <p class="">Email</p>
                   <input type="email" class="form-control form-control-sm"  id="user_email"  name="user_email" required="required"/>
-                  <p class="d-none email-empty danger">Email cannot be empty</p> 
-                  <p class="d-none email-registered danger">Email already taken!!</p>
-                  <p class="d-none email-format danger">Email already taken!!</p> 
-               </div>
+                  <p class="d-none danger emailreg">Email already taken!!</p>
+                </div>
               </div>
               <div class="form-group row">
                 <div class="col-xs-3 col-md-3 col-md-offset-5">
                   <p class="">Name</p> 
                   <input type="text" class="form-control form-control-sm" id="user_name" name="user_name" required="required"/> 
-                  <p class="d-none name-empty danger">Name cannot be empty</p> 
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-xs-3 col-md-3 col-md-offset-5">
                   <p class="">Mobile</p> 
                   <input type="text" class="form-control form-control-sm" id="user_mobile" name="user_mobile" required="required"/> 
-                  <p class="d-none mobile-empty danger">Mobile cannot be empty</p>
-                  <p class="d-none mobile-check danger">Mobile number should contain 10 digits</p>
-                  <p class="d-none mobile-registered danger">Mobile number already taken!!</p>
+                  <p class="d-none danger mobreg">Mobile number already taken!!</p>
                 </div>
               </div> 
               <div class="form-group row">
                 <div class="col-xs-3 col-md-3 col-md-offset-5">
                   <p class="">Address</p> 
                   <input type="text" class="form-control form-control-sm" id="user_address" name="user_address" required="required"/>
-                  <p class="d-none address-empty danger">Address cannot be empty</p> 
                 </div>
-              </div> 
+              </div>
+              <div class="form-group row">
+                <div class="col-xs-3 col-md-3 col-md-offset-5">
+                  <p class="">Image</p>
+                  <input type="file" class="file-loading" name="userImage"  required="required"/>
+                </div>
+              </div>
               <div class="col-xs-2 col-md-2 col-md-offset-5">
-                <button class="btn btn-primary" type="submit" name="insert_op" id="crudbtn">INSERT</button>
-                <p class="d-none ins-succ ">Data inserted successfully!!</p> 
+                <button type="submit" class="btn btn-primary" id="insert_btn">INSERT</button>
               </div>      
             </form> 
           </div>
@@ -309,4 +322,5 @@ session_start();
        </div>
       </div>
     </div>
+ 
 </header>

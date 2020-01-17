@@ -1,8 +1,9 @@
 $(document).ready(function(){
-     $(".update-form .up-btn").click(function(e){
+     // $(".up-btn").click(function(e){
+      $( ".results" ).on( "click", ".up-btn", function(e) {
         e.preventDefault();
         var id = $(this).data('id');
-        console.log(id);
+        //console.log(id);
         // $('#userId').val(id);
          $.ajax({
         type: 'POST',
@@ -38,14 +39,13 @@ $("#savebtn").click(function(e){
                     $('.results').html(response);
                 //console.log(response);
                    $('#updatemodal').modal('toggle');
-
             }
         });
 });
-$(".update-form .del-btn").click(function(e){
+$( ".results" ).on( "click", ".del-btn", function(e) {
         e.preventDefault();
         var id = $(this).data('id');
-        console.log(id);
+        //console.log(id);
         // $('#userId').val(id);
          $.ajax({
         type: 'POST',
@@ -154,7 +154,6 @@ $(this).blur();
         form.append("reg_email_id", $("#reg_email_id").val());
         form.append("user_password_two",  $("#user_password_two").val());
         $.ajax({
-
           "url": "http://localhost/Project1/register.php",
           "method": "POST",
           "data": form,
@@ -163,7 +162,7 @@ $(this).blur();
         }).done(function (response) {
             console.log(response)
           if (response==1) {
-            window.location.replace("http://localhost/Project1/index.php");
+            $('#Reg').modal('toggle');
             $(".reg-success").removeClass("d-none");
             $(".reg-success").addClass("d-block");
 
@@ -179,79 +178,30 @@ $(this).blur();
     }
 });
 
-$("#insertform").validate({
-         rules: {
-            user_email: {
-                required: true,
-                email: true
-            },
-            user_name: {
-                required: true
-            },
-             user_mobile: {
-                required: true,
-                minlength: 10,
-                number: true
-            },
-            user_address:{
-                required: true
-                 
-            }
-        },
-         submitHandler: function (form) {
-             //alert('valid form submission'); // for demo
-             var form = new FormData();
-        form.append("user_email", $("#user_email").val());
-        form.append("user_name", $("#user_name").val());
-        form.append("user_mobile", $("#user_mobile").val());
-        form.append("user_address", $("#user_address").val());
-            $.ajax({
 
-          "url": "http://localhost/Project1/insert.php",
-          "method": "POST",
-          "data": form,
-          "mimeType": "multipart/form-data",
+
+    $("#insertform").unbind('submit').bind('submit', function(e) {
+
+    // $( "#insertform" ).on( "click", ".ins-btn", function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+          type: 'POST',
+          url: 'insert.php',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
           processData: false,
-          contentType: false
-        }).done(function (response) {
-            console.log(response);
-            if (response==1){
-
-            $(".email-registered").removeClass("d-none");
-            $(".email-registered").addClass("d-block");
+          success:function(response){
+              // $('.results').html(response);
+              window.location.replace("http://localhost/Project1/index.php");
+              $('#insertmodal').modal('toggle');
             }
-            if(response!=1){
-            $(".email-registered").addClass("d-none");
-            $(".email-registered").removeClass("d-block");
-            }                
-            if(response==2){
-            $(".mobile-registered").removeClass("d-none");
-            $(".mobile-registered").addClass("d-block");
-            }
-             if(response==12){
-            $(".email-registered").removeClass("d-none");
-            $(".email-registered").addClass("d-block");
-
-            $(".mobile-registered").removeClass("d-none");
-            $(".mobile-registered").addClass("d-block");
-            } 
-            if(response==0){
-            window.location.replace("http://localhost/Project1/index.php");
-            $(".email-registered").addClass("d-none");
-            $(".email-registered").removeClass("d-block");
-
-            $(".mobile-registered").addClass("d-none");
-            $(".mobile-registered").removeClass("d-block");
-
-            $(".ins-succ").removeClass("d-none");
-            $(".ins-succ").addClass("d-block");
-
-          }
         });
-             return false; // required to block normal submit since you used ajax
-         }
-     });
-
+      });
+  
      $("#loginpage").click(function(e){
     
         e.preventDefault();
@@ -394,33 +344,6 @@ $("#delete-data").validate({
             if (response==1){
             $(".data-deleted").removeClass("d-none");
             $(".data-deleted").addClass("d-block");
-            }  
-        });
-             return false; // required to block normal submit since you used ajax
-         }
-     });
-
-$("#session-update-form").validate({
-         rules: {
-            new_email: {
-                required: true            }
-        },
-         submitHandler: function (form) {
-            var form = new FormData();
-            form.append("new_email", $("#new_email").val());
-            $.ajax({
-
-          "url": "http://localhost/Project1/session_update.php",
-          "method": "POST",
-          "data": form,
-           processData: false,
-           contentType: false
-        }).done(function (response) {
-            console.log(response);
-            if (response==1){
-                console.log("Email updated successfully");
-            // $(".name-updated").removeClass("d-none");
-            // $(".name-updated").addClass("d-block");
             }  
         });
              return false; // required to block normal submit since you used ajax

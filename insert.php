@@ -1,29 +1,41 @@
+  
 <?php
-        require_once 'dbconnect.php';
+require_once 'dbconnect.php';
+if($_POST){
 
-        $mobile = $_POST['user_mobile'];
-        $emailid = $_POST['user_email'];
 
-        $sql = "SELECT email FROM crud WHERE email='$emailid'";
-        $result = $conn->query($sql);
-        $res = mysqli_query($conn, $sql);
-        $rows=mysqli_num_rows($res);
 
-        $sqll = "SELECT mobile FROM crud WHERE mobile='$mobile'";
-        $rest = $conn->query($sqll);
-        $ress = mysqli_query($conn, $sqll);
-        $row=mysqli_num_rows($ress);
+    $email = $_POST['user_email'];
+    $name = $_POST['user_name'];
+    $mobile = $_POST['user_mobile'];
+    $address = $_POST['user_address'];
 
-        if($rows >= 1){
-        echo 1;
+    // print_r($email);
+    // print_r($name);
+    // print_r($mobile);
+    // print_r($address);
+
+
+    $type = explode('.', $_FILES['userImage']['name']);
+    $type = $type[count($type) - 1];
+    $url = '../Project1/images/' . uniqid(rand()) . '.' . $type;
+
+    if(in_array($type, array('gif', 'jpg', 'jpeg', 'png'))) {
+        if(is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+            if(move_uploaded_file($_FILES['userImage']['tmp_name'], $url)) {
+
+                // insert into database
+                $sql = "INSERT INTO crud (email, name, mobile, address, image) VALUES ('$email', '$name', '$mobile', '$address', '$url')";
+                $results = $conn->query($sql);
+                } 
+                    if($results){
+                        echo 1;
+                        }
+                    else{
+                        echo 0;
+                        }
+                        
+                }
+            }
         }
-        if($row >= 1){
-        echo 2;
-        }
-         else{
-        $sql = "INSERT INTO `crud` (email, name, mobile, address) VALUES ('".$_POST["user_email"]."','".$_POST["user_name"]."', '".$_POST["user_mobile"]."', '".$_POST["user_address"]."')";
-        $results = $conn->query($sql);
-        echo 0;  
-    }   
 ?>
-
