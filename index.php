@@ -11,6 +11,7 @@
         <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/js/plugins/piexif.min.js" type="text/javascript"></script>
 
         <script src="js/canvas-to-blob.min.js" type="text/javascript"></script>

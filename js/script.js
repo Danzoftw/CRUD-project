@@ -192,10 +192,11 @@ $(this).blur();
           url: 'insert.php',
           dataType: 'json',
           data: formData,
+          cache: false,
           contentType: false,
           processData: false,
           success:function(response){
-              // $('.results').html(response);
+               $('disp_ins').html(response);
               window.location.replace("http://localhost/Project1/index.php");
               $('#insertmodal').modal('toggle');
             }
