@@ -3,42 +3,83 @@
 @import "custom.less";
 @import "mixins.less";
 
-
 html{
   scroll-behavior: smooth;
 }
+@media only screen and (max-device-width: 480px) {
+
+    }
 body {
+  display: grid;
+  grid-template-rows: 150px auto 100px;
   // font-family: "Roboto";
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 300;
   color: @body-text;
   @media(min-width: 767px){
+    font-size: 0.8rem;
+    height: 100%;
+  }
+  @media(min-width: 1200px){
     font-size: 0.9rem;
+    height: 100%;
   }
 }
-// .container{
-//   @media(min-width: 1400px){
-//     max-width: 1250px;
-//   }
-// }
-// .name-inline{
-//   display: -webkit-box;
-// }
-// .email-inline{
-//   display: -webkit-box;
-// }
+.up-btn{
+  background:#b18cce;
+  border-radius: 6px;
+  transition-property: background, border-radius; 
+  transition-duration: 1s;
+}
+.up-btn span{
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.up-btn:hover{
+  color: red;
+}
 
+
+.del-btn {
+  font-size: 15px;
+}
+
+
+
+
+.sub-title{
+  font-size: 0.8rem;
+  @media(min-width: 767px){
+    font-size: 0.9rem;
+  }
+  @media(min-width: 991px){
+    font-size: 1rem;
+  }
+  @media(min-width: 1200px){
+    font-size: 1.2rem;
+  }
+}
+.word-break-all{
+  word-break: break-all;
+}
+.results{
+  position: relative;
+  clear: both;
+}
 table{
   border-collapse: collapse;
-    width: 100%;
-    font-size: 25px;
-    color: black;
-    text-align: left;
-    font-family: monospace;
+  width: 100%;
+  font-size: 15px;
+  color: black;
+  text-align: left;
+  font-family: monospace;
 }
 .reg-succ{
   color: green;
-    font-weight: bold;
+  font-weight: bold;
 }
 .update-color{
   font-size: 20px;
@@ -87,7 +128,6 @@ table{
   text-align: right;
 }
 .login-succ{
-  
   font-size: 14px;
   font-weight: bold;
 }
