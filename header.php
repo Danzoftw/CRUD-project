@@ -4,51 +4,49 @@ session_start();
 ?>
 
 <header>
-
   <div class="container">
     <div class="col-sm-12">
       <div class="row">
         <?php
-          if ($_SESSION) {
+          if ($_SESSION){
             ?>
-            
-            <div class="results-insert d-flex">
-            <div class="col-sm-8">
-              <button type="button"  class="btn btn-info btn-lg " data-toggle="modal" data-target="#Logout">Logout</button>
-            </div>
-            <div class="col-sm-8">
-              <button type="button"  class="btn btn-info btn-lg ins-btn" data-toggle="modal" data-target="#insertmodal">Insert</button>
-              <!-- <p class="d-none ins-succ">Data inserted successfully!!</p> -->
-            </div>
-            </div>
-            
             <?php
-
           }else{
         ?>
-          <div class="col-sm-6">
-            <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#btnlogin">Login</button>
+        <div id="login_disp">
+          <div class="d-flex">
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#btnlogin">Login</button>
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#Reg">Registration</button>
+            </div>
           </div>
-          <div class="col-sm-6">
-            <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#Reg">Registration</button>
-          </div>
+        </div>
           <?php 
             }
           ?>
-          <!-- Modal Login -->
+          <!-- Modal User/admin Login -->
         <div class="modal" id="btnlogin">
           <div class="modal-dialog">            
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
+                <div class="col-sm-7 user-login">
+                <p>USER LOGIN</p>
+                </div>
+                <div class="col-sm-4 admin-login">
+                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#adminloginform">Admin?</button>
+                </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">
-                <form action="" method="POST" id="loginform" >
+                <form action="" method="POST" id="loginform">
+
                   <div class="form-group row">
                    <div class="col-xs-3 col-md-3 col-md-offset-5">
                       <p class="font">Email :</p>
-                      <input type="text" class="form-control form-control-sm"  id="login_email_id"  name="login_email_id" required="required"/> 
+                      <input type="text" class="form-control form-control-sm"  id="login_email_id"  name="login_email_id" required="required"/>
                    </div>
                   </div>
                   <div class="form-group row">
@@ -61,266 +59,33 @@ session_start();
                       <button class="btn btn-primary" type="submit" name="loginpage" id="loginpage">login</button>
                       <p class="d-none unsucc_login danger">Invalid username or password</p>
                     </div>      
+                </form>
+
+                 <form action="" method="POST" id="adminloginform" class="d-none">
+                  <div class="form-group row">
+                   <div class="col-xs-3 col-md-3 col-md-offset-5">
+                      <p class="font">Email :</p>
+                      <input type="text" class="form-control form-control-sm"  id="admin_login_email_id"  name="admin_login_email_id" required="required"/>
+                   </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-xs-3 col-md-3 col-md-offset-5">
+                      <p class="font">Password :</p> 
+                      <input type="password" class="form-control form-control-sm" id="admin_login_user_password" name="admin_login_email_id" required="required"/> 
+                    </div>
+                  </div>  
+                    <div class="col-xs-2 col-md-2 col-md-offset-5 login-align">
+                      <button class="btn btn-primary" type="submit" name="loginpage" id="loginpage">login</button>
+                      <p class="d-none unsucc_login danger">Invalid username or password</p>
+                    </div>      
                 </form>                 
               </div>
             </div>
           </div>
         </div>
+        <!-- Modal User/admin Login -->
     </div>
   </div>
 </div>
-<!-- Modal Login -->
 
-<!-- Modal Logout-->
-<form action="" method="POST" id="logout_sess">
-  <div class="modal" id="Logout" >
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Do you really want to logout?</h4>
-        </div>
-        <div class="modal-body">
-          <button type="button" class="btn btn-default" id="logout_session" >Yes</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-  <?php
-    if(!$_SESSION){
-    }
-    else
-    {
-  ?>
-  <div class="results ">
-    <div class="container">
-      <div class="titles-holder d-flex">
-        <div class="col-sm-3 word-break-all">
-          <h4 class="sub-title">Email</h4>
-        </div>
-        <div class="col-sm-1 word-break-all">
-          <h4 class="sub-title">Name</h4>
-        </div>
-        <div class="col-sm-2 word-break-all">
-          <h4 class="sub-title">Mobile</h4>
-        </div>
-        <div class="col-sm-3 word-break-all">
-          <h4 class="sub-title">Address</h4>
-        </div>
-        <div class="col-sm-2 ">
-          <h4 class="sub-title">Images</h4>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-    <?php 
-      $sql = "SELECT * FROM crud"; 
-      $result = $conn-> query($sql);
-      while ($row = $result->fetch_assoc()){
-        $image = substr($row['image'], 3);
-    ?>
-      <div class="single-row d-flex">
-        <div class="col-sm-3 word-break-all">
-          <p><?php echo $row["email"]; ?></p>
-        </div>
-        <div class="col-sm-1 word-break-all">
-          <p><?php echo $row["name"]; ?></p>
-        </div>
-        <div class="col-sm-2 word-break-all">
-          <p><?php echo $row["mobile"]; ?></p>
-        </div>
-        <div class="col-sm-3 word-break-all">
-          <p><?php echo $row["address"]; ?></p>
-        </div>
-        <div class="col-sm-2">
-          <?php echo "<img src='".$row['image']."' style='height:100px; width:100px;'/>";?>
-        </div>
-        <div class="col-sm-1">
-          <button type="button" id="<?php echo $row["id"];?>" data-role="update" data-target="#updatemodal" data-toggle="modal" class="up-btn" data-id="<?php echo $row["id"];?>" ><span>UPDATE</span></button>
-        </div>  
-        <div class="col-sm-1">
-          <button type="button" id="test_del" data-role="delete" data-target="#deletemodal" data-toggle="modal" class="del-btn" data-id="<?php echo $row["id"];?>" 
-            ><span>DELETE</span></button>
-        </div>       
-      </div>
-      <?php
-        }
-      ?> 
-    </div>   
-  </div>
-    <!-- Modal update -->
-  <div class="modal" id="updatemodal">
-    <div class="modal-dialog">            
-      <!-- Modal content-->
-      <div class="modal-content update-color">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="ce-padd">
-            <div class="form-group row">
-              <div class="col-sm-6">
-                <form>
-                  <label>Email</label>
-                  <input type="text" id="email" class="form-control" readonly="true">
-                  <label>Name</label>
-                  <input type="text" id="name" class="form-control">
-                  <label>Mobile</label>
-                  <input type="text" id="mobile" class="form-control">
-                  <label>Address</label>
-                  <input type="text" id="address" class="form-control">
-                  <input type="hidden" id="userId" class="form-control">
-                  <a href='#' id="savebtn" class='btn btn-info btn-lg' >UPDATE</a>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal update -->
-
-  <!-- Modal Delete -->
-  <div class="modal" id="deletemodal">
-    <div class="modal-dialog">            
-      <!-- Modal content-->
-      <div class="modal-content update-color">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <!-- <h4 class="modal-title">Modal Header</h4> -->
-        </div>
-        <div class="modal-body">
-          <div class="ce-padd">
-            <div class="form-group row">
-              <div class="col-sm-6">
-                <form>
-                  <label>Email</label>
-                  <input type="text" id="demail" class="form-control" readonly="true">
-                  <label>Name</label>
-                  <input type="text" id="dname" class="form-control" readonly="true">
-                  <label>Mobile</label>
-                  <input type="text" id="dmobile" class="form-control" readonly="true">
-                  <label>Address</label>
-                  <input type="text" id="daddress" class="form-control" readonly="true">
-                  <input type="hidden" id="duserId" class="form-control">
-                  <a href='#' id="delbtn" class='btn btn-info btn-lg' >DELETE</a>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Modal Delete -->
-       
-<!-- Modal INSERT -->
-  <div class="modal" id="insertmodal">
-    <div class="modal-dialog">            
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <!-- <h4 class="modal-title">Modal Header</h4> -->
-        </div>
-        <div class="modal-body">
-          <form action="" method="POST" id="insertform" class="form-horizontal" enctype="multipart/form-data">
-            <div class="form-group row">
-             <div class="col-xs-3 col-md-3 col-md-offset-5">
-                <p class="">Email</p>
-                <input type="email" class="form-control form-control-sm"  id="user_email"  name="user_email" required="required"/>
-                <p class="d-none danger emailreg">Email already taken!!</p>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-xs-3 col-md-3 col-md-offset-5">
-                <p class="">Name</p> 
-                <input type="text" class="form-control form-control-sm" id="user_name" name="user_name" required="required"/> 
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-xs-3 col-md-3 col-md-offset-5">
-                <p class="">Mobile</p> 
-                <input type="text" class="form-control form-control-sm" id="user_mobile" name="user_mobile" required="required"/> 
-                <p class="d-none danger mobreg">Mobile number already taken!!</p>
-              </div>
-            </div> 
-            <div class="form-group row">
-              <div class="col-xs-3 col-md-3 col-md-offset-5">
-                <p class="">Address</p> 
-                <input type="text" class="form-control form-control-sm" id="user_address" name="user_address" required="required"/>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-xs-3 col-md-3 col-md-offset-5">
-                <p class="">Image</p>
-                <input type="file" class="file-loading" name="userImage"  required="required"/>
-              </div>
-            </div>
-            <div class="col-xs-2 col-md-2 col-md-offset-5">
-              <button type="submit" class="btn btn-primary" id="insert_btn">INSERT</button>
-            </div>      
-          </form> 
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal insert -->
-  <?php
-  }
-  ?>
-
-  <!-- Modal Register-->
-  <div class="col-sm-6">
-    <div class="row">
-      <div class="modal" id="Reg">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <div class="signin-form">
-                  <form action="" method="POST" id="register-form" class="form-signin">
-                    <div class="form-group row">
-                     <div class="col-xs-3 col-md-3 col-md-offset-5">
-                       <p class="font">Email :</p>
-                       <input type="email" class="form-control form-control-sm"  id="reg_email_id"  name="reg_email_id" required="required" /> 
-                       <p class="d-none email-empty danger" >Email id cannot be empty</p>
-                       <p class="d-none reg-empty danger">Email already registered</p>
-                     </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="col-xs-3 col-md-3 col-md-offset-5">
-                        <p class="font">Password :</p> 
-                        <input type="password" class="form-control form-control-sm" id="user_password_one" name="user_password_one" required="required" value="pass1" />
-                        <p class="d-none pass-empty danger">Password cannot be empty</p> 
-                      </div>
-                    </div> 
-                    <div class="form-group row">
-                      <div class="col-xs-3 col-md-3 col-md-offset-5">
-                        <p class="font">Re-Enter Password :</p> 
-                        <input type="password" class="form-control form-control-sm" id="user_password_two" name="user_password_two" required="required" value="pass2" />
-                        <p class="d-none passtwo-empty danger" >Password cannot be empty</p> 
-                        <p class="d-none pass-error danger">Password do not match</p>
-                      </div>
-                    </div> 
-                    <div class="col-xs-2 col-md-2 col-md-offset-5 reg-align">
-                      <button class="btn btn-primary" type="submit" name="register" id="btnsubmit">Register</button>
-                    </div>
-                    <p class="reg-success d-none">Registered successfully</p> 
-                  </form>  
-              </div>
-            </div>
-          </div>
-        </div>
-     </div>
-    </div>
-  </div>
-<!-- Modal Register-->
 </header>
