@@ -1,10 +1,45 @@
 $(document).ready(function(){
-     // $(".up-btn").click(function(e){
-      $( ".results" ).on( "click", ".up-btn", function(e) {
+      
+$("#upload_image").on('click',function() {
+    $("input[type='file']").click();
+});
+$("#img_btn").on('click',function() {
+    $("input[type='file']").click();
+});
+$('.ins-btn').on('click',function() {
+  $("#image_display").hide();
+  $("#upload_image").show();
+
+})
+
+$('#adminbtn').click(function(){
+  $('#btnlogin').modal('toggle');
+  $('#adminloginform').removeClass('d-none');
+  $('#adminloginform').addClass('d-block');
+});
+$('#adminlogintoggle').click(function(){
+  $('#btnlogin').modal('toggle');
+  $('#adminloginform').addClass('d-none');
+  $('#adminloginform').removeClass('d-block');
+});
+$('#del_mul').click(function(){
+  var checkValues = $('input[name=checkboxlist]:checked').map(function()
+            {
+                return $(this).val();
+            }).get();
+   $.ajax({
+        
+        type: 'POST',
+        url: 'deletemultiple.php',
+        data: { ids: checkValues },
+        success: function(response) {
+          getdata();
+        }
+    });
+});
+      $(".results").on( "click", ".up-btn", function(e) {
         e.preventDefault();
         var id = $(this).data('id');
-        //console.log(id);
-        // $('#userId').val(id);
          $.ajax({
         type: 'POST',
         url: 'select.php',
@@ -23,21 +58,20 @@ $("#savebtn").click(function(e){
         e.preventDefault();
         var form = new FormData();
         form.append("email", $("#email").val());
-        form.append("name",  $("#name").val());
-        form.append("mobile",  $("#mobile").val());
-        form.append("address",  $("#address").val());
-        form.append("userId",  $('#userId').val());
+        form.append("name", $("#name").val());
+        form.append("mobile", $("#mobile").val());
+        form.append("address", $("#address").val());
+        form.append("userId", $('#userId').val());
 
           $.ajax({
-
           "url": "http://localhost/Project1/update.php",
           "method": "POST",
           "data": form,
           processData: false,
           contentType: false,
           success :function(response){
-                    $('.results').html(response);
-                //console.log(response);
+                    // $('.results').html(response);
+                    getdata();
                    $('#updatemodal').modal('toggle');
             }
         });
@@ -45,8 +79,6 @@ $("#savebtn").click(function(e){
 $( ".results" ).on( "click", ".del-btn", function(e) {
         e.preventDefault();
         var id = $(this).data('id');
-        //console.log(id);
-        // $('#userId').val(id);
          $.ajax({
         type: 'POST',
         url: 'select.php',
@@ -59,7 +91,6 @@ $( ".results" ).on( "click", ".del-btn", function(e) {
            $('#dmobile').val(response[2]);
            $('#daddress').val(response[3]);
            $('#duserId').val(response[4]);
-          //console.log($('#duserId').val());
         }
     });
 });
@@ -73,6 +104,23 @@ $("#delbtn").click(function(e){
         form.append("duserId",  $('#duserId').val());
 
           $.ajax({
+          "url": "http://localhost/Project1/delete.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          success :function(response){
+                    // $('.results').html(response);
+                    getdata();
+                   $('#deletemodal').modal('toggle');
+            }
+        });
+});
+$("#cb_delete").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+
+          $.ajax({
 
           "url": "http://localhost/Project1/delete.php",
           "method": "POST",
@@ -80,15 +128,17 @@ $("#delbtn").click(function(e){
           processData: false,
           contentType: false,
           success :function(response){
-                    $('.results').html(response);
-                //console.log(response);
+                    // $('.results').html(response);
+                    getdata();
                    $('#deletemodal').modal('toggle');
-
             }
         });
 });
 
 $('#email').focus(function() {
+$(this).blur();
+});
+$('#user_email').focus(function() {
 $(this).blur();
 });
 $('#demail').focus(function() {
@@ -105,7 +155,6 @@ $(this).blur();
 });
    $("#btnsubmit").click(function(e){
          e.preventDefault();
-
         if($("#reg_email_id").val()== ''){
             $(".email-empty").addClass("d-block");
             $(".email-empty").removeClass("d-none");
@@ -177,179 +226,184 @@ $(this).blur();
         });
     }
 });
-
-
-
-    $("#insertform").unbind('submit').bind('submit', function(e) {
-
-    // $( "#insertform" ).on( "click", ".ins-btn", function(e) {
+    $("#insertform").unbind('submit').bind('submit', function(e){
         e.preventDefault();
-        var form = $(this);
+     
         var formData = new FormData($(this)[0]);
-
         $.ajax({
           type: 'POST',
-          url: 'insert.php',
+          url: 'http://localhost/Project1/insert.php',
           dataType: 'json',
           data: formData,
           cache: false,
           contentType: false,
           processData: false,
-          success:function(response){
-               $('disp_ins').html(response);
-              window.location.replace("http://localhost/Project1/index.php");
-              $('#insertmodal').modal('toggle');
-            }
+           }).done(function (response) {
+              //$('.results').html(response);
+            getdata();
+            //console.log(response);
+             $('#insertmodal').modal('toggle');
+             
+            
         });
       });
-  
      $("#loginpage").click(function(e){
-    
         e.preventDefault();
         var form = new FormData();
         form.append("login_email_id", $("#login_email_id").val());
         form.append("login_user_password",  $("#login_user_password").val());
+        pageurl = ('crud.php');
         $.ajax({
-
           "url": "http://localhost/Project1/login.php",
           "method": "POST",
           "data": form,
           processData: false,
-          contentType: false
-        }).done(function (response) {
+          contentType: false,
+          async: true,
+          success :function(response){
             console.log(response);
-          if (response==0) {
-            //window.location.replace("http://localhost/Project1/index.php");
-            window.location.replace("http://localhost/Project1/index.php");
-            //header("location:index.php");
-            console.log("Login successful");
-            $(".succ_login").addClass("d-block");
-            $(".succ_login").removeClass("d-none");
-
-            $(".unsucc_login").removeClass("d-block");
-            $(".unsucc_login").addClass("d-none");
-          }
-          if (response==1) {
-            console.log("Register first");
-            $(".unsucc_login").addClass("d-block");
-            $(".unsucc_login").removeClass("d-none");
-          }
-        });
+              if(response==0)
+              {
+               window.location.replace("http://localhost/Project1/crud.php");
+              }
+        }
     });
+});
+  $("#adminloginpage").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("admin_login_email_id", $("#admin_login_email_id").val());
+        form.append("admin_login_password",  $("#admin_login_password").val());
+        $.ajax({
+          "url": "http://localhost/Project1/admin.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          async: true,
+          success :function(response){
+              if(response==0)
+              {
+               window.location.replace("http://localhost/Project1/crud.php");
+              }
+        }
+    });
+});
+     $("#tst_btn").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("login_email_id", $("#login_email_id").val());
+        form.append("login_user_password",  $("#login_user_password").val());
+        pageurl = ('crud.php');
+        $.ajax({
+          "url": "http://localhost/Project1/crud.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          success :function(response){
+            console.log(response);
+              if(response==0)
+              {
+               window.location.replace("http://localhost/Project1/crud.php");
+              }
+        }
+    });
+});
+
+
 
 $("#logout_session").click(function(e){
         e.preventDefault();
           $.ajax({
 
-          "url": "http://localhost/Project1/logout.php",
+          "url": "http://localhost/Project1/home-disp.php",
           processData: false,
           contentType: false,
-          success :function(response){
-                   $('.log-disp').html(response);
-                   $('#logout_sess').modal('toggle');
-                    window.location.replace("http://localhost/Project1/index.php");
-            }
-        });
-
-     
-     
+           }).done(function (response) {
+                  $('#Logout').modal('toggle');
+                  window.location.replace("http://localhost/Project1/index.php");
+               });
+          });
 });
+function getdata(){
+  var form = new FormData();
+form.append("user_email", "cool.vaibhaqv15@gmail.com");
+form.append("user_name", "Vaibhava");
+form.append("user_mobile", "0951168949");
+form.append("user_address", "6 Brooklodge Ln Md 21769");
 
-$("#updateaddress").validate({
-         rules: {
-            current_user_email: {
-                required: true,
-                email: true
-            },
-            new_user_address: {
-                required:true
-            }
-        },
-         submitHandler: function (form) {
-            var form = new FormData();
-            form.append("current_user_email", $("#current_user_email").val());
-            form.append("new_user_address", $("#new_user_address").val());
-            $.ajax({
+var settings = {
+  "url": "http://localhost/Project1/disp.php",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "multipart/form-data; boundary=--------------------------440022383388894510873016"
+  },
+  "processData": false,
+  "mimeType": "multipart/form-data",
+  "contentType": false,
+  "data": form
+};
 
-          "url": "http://localhost/Project1/updateaddress.php",
-          "method": "POST",
-          "data": form,
-           processData: false,
-           contentType: false
-        }).done(function (response) {
-            console.log(response);
-            if (response==1){
-                //var loadUrl = "http://localhost/Project1/index.php";
-                 $('#update-btn').modal('toggle'); 
-            //window.location.replace("http://localhost/Project1/index.php");
-            $(".address-updated").removeClass("d-none");
-            $(".address-updated").addClass("d-block");
-            }  
-        });
-             return false; // required to block normal submit since you used ajax
-         }
-     });
-
-$("#updatename").validate({
-         rules: {
-            current_user_email: {
-                required: true
-                
-            },
-            new_user_name: {
-                required:true
-            }
-        },
-         submitHandler: function (form) {
-            var form = new FormData();
-            form.append("current_user_email", $("#current_user_email").val());
-            form.append("new_user_name", $("#new_user_name").val());
-            $.ajax({
-
-          "url": "http://localhost/Project1/updatename.php",
-          "method": "POST",
-          "data": form,
-           processData: false,
-           contentType: false
-        }).done(function (response) {
-            console.log(response);
-            if (response==1){
-            window.location.replace("http://localhost/Project1/index.php");
-
-            $(".name-updated").removeClass("d-none");
-            $(".name-updated").addClass("d-block");
-            }  
-        });
-             return false; // required to block normal submit since you used ajax
-         }
-     });
-
-$("#delete-data").validate({
-         rules: {
-            email_delete: {
-                required: true
-            }
-        },
-         submitHandler: function (form) {
-            var form = new FormData();
-            form.append("email_delete", $("#email_delete").val());
-            $.ajax({
-
-          "url": "http://localhost/Project1/delete.php",
-          "method": "POST",
-          "data": form,
-           processData: false,
-           contentType: false
-        }).done(function (response) {
-            console.log(response);
-            if (response==1){
-            $(".data-deleted").removeClass("d-none");
-            $(".data-deleted").addClass("d-block");
-            }  
-        });
-             return false; // required to block normal submit since you used ajax
-         }
-     });
-
+$.ajax(settings).done(function (response) {
+$('#results').html(response);
 });
+}
 
+function getmain(){
+var form = new FormData();
+form.append("user_email", "cool.vaibhaqv15@gmail.com");
+form.append("user_name", "Vaibhava");
+form.append("user_mobile", "0951168949");
+form.append("user_address", "6 Brooklodge Ln Md 21769");
+
+var settings = {
+  "url": "http://localhost/Project1/home-disp.php",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "multipart/form-data; boundary=--------------------------801410586992815505092846"
+  },
+  "processData": false,
+  "mimeType": "multipart/form-data",
+  "contentType": false,
+  "data": form
+};
+
+$.ajax(settings).done(function (response) {
+  $('#hmdisp').html(response);
+});
+}
+
+function logoutinsert(){
+  var form = new FormData();
+var settings = {
+  "url": "http://localhost/Project1/login.php",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "multipart/form-data; boundary=--------------------------744456061707360223360602"
+  },
+  "processData": false,
+  "mimeType": "multipart/form-data",
+  "contentType": false,
+  "data": form
+};
+
+$.ajax(settings).done(function (response) {
+  $('#logoutdisp').html(response);
+});
+}
+function readURL(input) {
+  if (input.files && input.files[0]){
+      var reader = new FileReader();
+      reader.onload = function (e) {
+          $('#image_display').attr('src', e.target.result);
+          $('#upload_image').hide();
+          $("#image_display").show();
+      }
+      reader.readAsDataURL(input.files[0]);
+  }
+}
+     
