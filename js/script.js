@@ -1,8 +1,27 @@
 $(document).ready(function(){
       
-      //$('#content_disp').load('index.php');
-      //alert("WOrking");
+$("#upload_image").on('click',function() {
+    $("input[type='file']").click();
+});
+$("#img_btn").on('click',function() {
+    $("input[type='file']").click();
+});
+$('.ins-btn').on('click',function() {
+  $("#image_display").hide();
+  $("#upload_image").show();
 
+})
+
+$('#adminbtn').click(function(){
+  $('#btnlogin').modal('toggle');
+  $('#adminloginform').removeClass('d-none');
+  $('#adminloginform').addClass('d-block');
+});
+$('#adminlogintoggle').click(function(){
+  $('#btnlogin').modal('toggle');
+  $('#adminloginform').addClass('d-none');
+  $('#adminloginform').removeClass('d-block');
+});
 $('#del_mul').click(function(){
   var checkValues = $('input[name=checkboxlist]:checked').map(function()
             {
@@ -17,10 +36,8 @@ $('#del_mul').click(function(){
           getdata();
         }
     });
-
 });
-
-      $( ".results" ).on( "click", ".up-btn", function(e) {
+      $(".results").on( "click", ".up-btn", function(e) {
         e.preventDefault();
         var id = $(this).data('id');
          $.ajax({
@@ -87,7 +104,6 @@ $("#delbtn").click(function(e){
         form.append("duserId",  $('#duserId').val());
 
           $.ajax({
-
           "url": "http://localhost/Project1/delete.php",
           "method": "POST",
           "data": form,
@@ -97,7 +113,6 @@ $("#delbtn").click(function(e){
                     // $('.results').html(response);
                     getdata();
                    $('#deletemodal').modal('toggle');
-
             }
         });
 });
@@ -116,12 +131,14 @@ $("#cb_delete").click(function(e){
                     // $('.results').html(response);
                     getdata();
                    $('#deletemodal').modal('toggle');
-
             }
         });
 });
 
 $('#email').focus(function() {
+$(this).blur();
+});
+$('#user_email').focus(function() {
 $(this).blur();
 });
 $('#demail').focus(function() {
@@ -138,7 +155,6 @@ $(this).blur();
 });
    $("#btnsubmit").click(function(e){
          e.preventDefault();
-
         if($("#reg_email_id").val()== ''){
             $(".email-empty").addClass("d-block");
             $(".email-empty").removeClass("d-none");
@@ -243,6 +259,48 @@ $(this).blur();
           "data": form,
           processData: false,
           contentType: false,
+          async: true,
+          success :function(response){
+            console.log(response);
+              if(response==0)
+              {
+               window.location.replace("http://localhost/Project1/crud.php");
+              }
+        }
+    });
+});
+  $("#adminloginpage").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("admin_login_email_id", $("#admin_login_email_id").val());
+        form.append("admin_login_password",  $("#admin_login_password").val());
+        $.ajax({
+          "url": "http://localhost/Project1/admin.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
+          async: true,
+          success :function(response){
+              if(response==0)
+              {
+               window.location.replace("http://localhost/Project1/crud.php");
+              }
+        }
+    });
+});
+     $("#tst_btn").click(function(e){
+        e.preventDefault();
+        var form = new FormData();
+        form.append("login_email_id", $("#login_email_id").val());
+        form.append("login_user_password",  $("#login_user_password").val());
+        pageurl = ('crud.php');
+        $.ajax({
+          "url": "http://localhost/Project1/crud.php",
+          "method": "POST",
+          "data": form,
+          processData: false,
+          contentType: false,
           success :function(response){
             console.log(response);
               if(response==0)
@@ -337,6 +395,15 @@ $.ajax(settings).done(function (response) {
   $('#logoutdisp').html(response);
 });
 }
-
-
-
+function readURL(input) {
+  if (input.files && input.files[0]){
+      var reader = new FileReader();
+      reader.onload = function (e) {
+          $('#image_display').attr('src', e.target.result);
+          $('#upload_image').hide();
+          $("#image_display").show();
+      }
+      reader.readAsDataURL(input.files[0]);
+  }
+}
+     

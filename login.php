@@ -16,6 +16,7 @@ session_start();
     $res = mysqli_query($conn, $sql);
     $rows=mysqli_num_rows($res);
     if($rows > 0){
+    
     echo 0;
     }
     if($rows == 0){

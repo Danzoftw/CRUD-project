@@ -1,7 +1,9 @@
 <?php
 require_once 'dbconnect.php';
 session_start();
+
 ?>
+
 <html>
     <head>
         <title>Internship</title>
@@ -35,12 +37,12 @@ session_start();
         <?php
         if ($_SESSION){
         ?>
-        
           <form method="POST">
             <div id="logoutdisp" class="d-flex">
             <div class="col-sm-4">
               <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#Logout">Logout</button>
             </div>
+
             <div class="col-sm-4">
               <button type="button" class="btn btn-info btn-lg ins-btn" data-toggle="modal" data-target="#insertmodal">Insert</button>
             </div>
@@ -200,7 +202,7 @@ session_start();
             <div class="form-group row">
              <div class="col-xs-3 col-md-3 col-md-offset-5">
                 <p class="">Email</p>
-                <input type="email" class="form-control form-control-sm"  id="user_email"  name="user_email" required="required"/>
+                <input type="email" class="form-control form-control-sm"  id="user_email"  name="user_email" required="required" readonly="true" value='<?php echo $_SESSION['name']?>' />
                 <p class="d-none danger emailreg">Email already taken!!</p>
               </div>
             </div>
@@ -223,12 +225,25 @@ session_start();
                 <input type="text" class="form-control form-control-sm" id="user_address" name="user_address" required="required"/>
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row image-up">
+              <div class="col-xs-3 col-md-3 col-md-offset-5">
+                <p class="">Image<span> *Minimum 1 MB</span></p>
+                <div id="upload_image" class="btn btn-sm btn-success fa fa-cloud-upload"></div>
+                <input type="file" class="file-loading"  hidden="true" name="userImage" required="required" onchange="readURL(this);"/>
+
+                 <button type="button" id="img_btn" class="visible" style="background: transparent; border: hidden;">
+
+                 <img id="image_display"  height="100" width="100" class="benefitImg" id="iconPersonalizeProfile" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"/>
+
+                 </button>
+              </div>
+            </div>
+            <!-- <div class="form-group row">
               <div class="col-xs-3 col-md-3 col-md-offset-5">
                 <p class="">Image</p>
                 <input type="file" class="file-loading" name="userImage"  required="required"/>
               </div>
-            </div>
+            </div> -->
             <div class="col-xs-2 col-md-2 col-md-offset-5">
               <button type="submit" class="btn btn-primary" id="insert_btn">INSERT</button>
             </div>      
@@ -239,55 +254,7 @@ session_start();
   </div>
   <!-- Modal insert -->
   
-  <!-- Modal Register-->
-  <div class="col-sm-6">
-    <div class="row">
-      <div class="modal" id="Reg">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <div class="signin-form">
-                  <form action="" method="POST" id="register-form" class="form-signin">
-                    <div class="form-group row">
-                     <div class="col-xs-3 col-md-3 col-md-offset-5">
-                       <p class="font">Email :</p>
-                       <input type="email" class="form-control form-control-sm"  id="reg_email_id"  name="reg_email_id" required="required" /> 
-                       <p class="d-none email-empty danger" >Email id cannot be empty</p>
-                       <p class="d-none reg-empty danger">Email already registered</p>
-                     </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="col-xs-3 col-md-3 col-md-offset-5">
-                        <p class="font">Password :</p> 
-                        <input type="password" class="form-control form-control-sm" id="user_password_one" name="user_password_one" required="required" value="pass1" />
-                        <p class="d-none pass-empty danger">Password cannot be empty</p> 
-                      </div>
-                    </div> 
-                    <div class="form-group row">
-                      <div class="col-xs-3 col-md-3 col-md-offset-5">
-                        <p class="font">Re-Enter Password :</p> 
-                        <input type="password" class="form-control form-control-sm" id="user_password_two" name="user_password_two" required="required" value="pass2" />
-                        <p class="d-none passtwo-empty danger" >Password cannot be empty</p> 
-                        <p class="d-none pass-error danger">Password do not match</p>
-                      </div>
-                    </div> 
-                    <div class="col-xs-2 col-md-2 col-md-offset-5 reg-align">
-                      <button class="btn btn-primary" type="submit" name="register" id="btnsubmit">Register</button>
-                    </div>
-                    <p class="reg-success d-none">Registered successfully</p> 
-                  </form>  
-              </div>
-            </div>
-          </div>
-        </div>
-     </div>
-    </div>
-  </div>
-<!-- Modal Register-->
+ 
 </div>
 
 </body>
